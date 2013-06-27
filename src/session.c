@@ -148,6 +148,13 @@ static ne_session *session_open(int with_lock) {
     if (with_lock && lock_store)
         ne_lockstore_register(lock_store, session);
     
+    ne_server_capabilities caps = {0, 0, 0};
+    int ret = ne_options(session, "/", &caps);
+    if (ret) {
+        fprintf(stderr, "Unable to establish connection\n");
+        return NULL;
+    }
+    
     return session;
 }
 
